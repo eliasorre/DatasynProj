@@ -39,6 +39,7 @@ logger = logging.getLogger(__name__)
 
 
 def train(hyp, opt, device, tb_writer=None):
+    torch.cuda.empty_cache()
     logger.info(colorstr('hyperparameters: ') + ', '.join(f'{k}={v}' for k, v in hyp.items()))
     save_dir, epochs, batch_size, total_batch_size, weights, rank, freeze = \
         Path(opt.save_dir), opt.epochs, opt.batch_size, opt.total_batch_size, opt.weights, opt.global_rank, opt.freeze
@@ -524,7 +525,8 @@ def train(hyp, opt, device, tb_writer=None):
     return results
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':        
+    torch.cuda.empty_cache()
     parser = argparse.ArgumentParser()
     parser.add_argument('--weights', type=str, default='yolo7.pt', help='initial weights path')
     parser.add_argument('--cfg', type=str, default='', help='model.yaml path')
